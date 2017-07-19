@@ -1,2 +1,1 @@
-this is a git file
-this is a new git bush
+这是一个git测试文件，测试修改内容并回复！！！
