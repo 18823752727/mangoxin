@@ -25,7 +25,36 @@
   
       <!--侧边栏-->
       <aside class="aside">
-  
+        <ul>
+          <li class="aside-item">
+            <div class="aside-item-title">
+              联系方式
+            </div>
+            <div class="aisde-item-content">
+              <p>QQ : 228973329</p>
+              <p>email : chengyi_zh@163.com</p>
+            </div>
+          </li>
+
+          <li class="aside-item">
+            <div class="aside-item-title">
+              标签
+            </div>
+            <div class="aisde-item-content">
+              <ul class="tags">
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+                <li class="tag-item">测试</li>
+              </ul>
+            </div>
+          </li>
+        </ul>
       </aside>
     </section>
   </div>
@@ -90,7 +119,7 @@ export default {
 </script>
 
 <style lang="less">
-@color-red: #dc3445;
+@color-red: #f4645f;
 
 * {
   margin: 0;
@@ -100,6 +129,7 @@ export default {
 }
 
 body {
+  color: #505050;
   background-color: #EBEDF2;
 }
 
@@ -183,13 +213,63 @@ button {
     margin: 40px auto;
 
     .artical {
-      width: 70%;
+      width: 65%;
     }
 
     .aside {
-      width: 27%;
-      height: 500px;
-      background-color: #fff;
+      width: 32%;
+
+      .aside-item {
+        padding: 20px 30px;
+        background-color: #fff;
+        margin-bottom: 25px;
+        border-radius: 5px;
+
+        .aside-item-title {
+          position: relative;
+          font-size: 18px;
+          padding-bottom: 10px;
+          margin-bottom: 20px;
+          border-bottom: 1px solid #ebebeb;
+          color: #303030;
+
+          &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 35%;
+            border-bottom: 1px solid @color-red;
+          }
+        }
+
+        .aisde-item-content {
+          p {
+            font-size: 14px;
+            padding-bottom: 8px;
+          }
+
+          .tags{
+            display: flex;
+            flex-wrap: wrap;
+
+            .tag-item {
+              font-size: 12px;
+              line-height: 30px;
+              margin: 0 5px 5px 0;
+              padding:0 10px;
+              border-radius: 3px;
+              color: #fff;
+              background-color: @color-red;
+              cursor: pointer;
+
+              &:hover {
+                background-color: darken(@color-red,10%);
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
