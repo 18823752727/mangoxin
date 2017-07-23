@@ -1,7 +1,7 @@
 let mongoskin = require('mongoskin'),
     config = require('../config');
 
-module.exports = (function() {
+module.exports = (() => {
     let host = config.host,
         port = config.port,
         dbName = config.dbname,
@@ -11,6 +11,5 @@ module.exports = (function() {
         native_parser: true
     };
 
-    console.log(str);
     return mongoskin.db(str, option);
 })
