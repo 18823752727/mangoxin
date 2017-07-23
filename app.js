@@ -20,7 +20,7 @@ app.set('view engine', 'jade');
 
 // 设置favicon的位置
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
+  
 // 使用中间件
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -52,4 +52,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = app; 
