@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var crub = require("../util/crub.js");
+const express = require('express');
+const router = express.Router();
+const crub = require("../util/crub.js");
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -15,21 +15,20 @@ router.get('/set-article-list', (req, res) => {
   collection.create({
     name: "我是用过借口过来的"
   }).then((item) => {
-    console.log(item);
     res.send(item);
   })
-})
+});
 
 // 查找列表
 router.get("/get-article-list", (req, res) => {
   let collection = new crub("list");
 
   collection.find().then((item) => {
-    console.log(item);
     res.send(item);
   })
-})
+});
 
+// 更新列表
 router.get("/update-article", (req, res) => {
   let collection = new crub("list");
 
@@ -40,8 +39,9 @@ router.get("/update-article", (req, res) => {
   }).then(() => {
     res.send("更新成功");
   })
-})
+});
 
+// 删除列表
 router.get("/delete-article", (req, res) => {
   let collection = new crub("list");
 
@@ -50,6 +50,6 @@ router.get("/delete-article", (req, res) => {
   }).then(() => {
     res.send("删除成功");
   })
-})
+});
 
 module.exports = router;

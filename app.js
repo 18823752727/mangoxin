@@ -1,18 +1,19 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
 // morgan是express默认的日志中间件
-var logger = require('morgan');
+const logger = require('morgan');
 // 中间件用于获取web浏览器发送的cookie中的内容。
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 // bodyParser用于解析客户端请求的body中的内容,内部使用JSON编码处理,url编码处理以及对于文件的上传处理
-var bodyParser = require('body-parser');
-
+const bodyParser = require('body-parser');
+// 跨域中间件
+const cors = require('cors');
 // 路由
-var index = require('./routes/index');
-var users = require('./routes/users');
+const index = require('./routes/index');
+const users = require('./routes/users');
 
-var app = express();
+const app = express();
 
 // 安装视图引擎
 app.set('views', path.join(__dirname, 'views'));
@@ -22,6 +23,7 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
   
 // 使用中间件
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
