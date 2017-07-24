@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import List from '@/components/List'
+import Create from '@/components/Create'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'list',
+      component: List
+    }, {
+      path: '/create',
+      name: 'create',
+      component: Create
     }
   ]
 })

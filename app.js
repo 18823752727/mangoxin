@@ -12,6 +12,7 @@ const cors = require('cors');
 // 路由
 const index = require('./routes/index');
 const users = require('./routes/users');
+const houtai = require('./routes/houtai');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 使用路由
 app.use('/', index);
 app.use('/users', users);
+app.use('/houtai', houtai);
 
 // 捕获404并转发到错误处理程序
 app.use(function(req, res, next) {
