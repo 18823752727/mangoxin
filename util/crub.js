@@ -34,7 +34,7 @@ class CRUB {
 
     /**
      * 查找数据
-     * @param model 需要查找的数据
+     * @param query 需要查找的数据
      * return promise
      */
     find(query) {
@@ -69,7 +69,7 @@ class CRUB {
 
         return new Promise((resolve, reject) => {
             let set = {
-                set: updateModel
+                $set: updateModel
             };
 
             db[collection].update(query, set, (err) => {

@@ -6,7 +6,7 @@
     </el-breadcrumb>
   
     <el-form :model="form" label-width="80px" ref="ruleForm" :rules="rules">
-      <el-form-item label="标题" prop="title">
+      <el-form-item label="标题" prop="title" class="article-title">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
   
@@ -24,8 +24,11 @@
         </el-checkbox-group>
       </el-form-item>
   
-      <el-form-item label="活动形式" prop="content">
-        <el-input type="textarea" v-model="form.content"></el-input>
+      <el-form-item label="内容" prop="content" class="article-content">
+        <el-input type="textarea" v-model="form.content" @input="renderHtml"></el-input>
+        <!--
+          -->
+        <div class="content-text" v-html="getRenderHtml"></div>
       </el-form-item>
   
       <el-form-item label-width="80px">
@@ -38,16 +41,45 @@
 
 <style lang="less">
 .form {
-  width: 500px;
-
   .el-breadcrumb {
     margin-bottom: 30px;
+  }
+
+  .article-title {
+    width: 500px;
+  }
+
+  .article-content {
+    .el-textarea {
+      width: 400px;
+
+      .el-textarea__inner {
+        height: 500px;
+        padding: 10px;
+        border: none;
+        resize: none;
+        background-color: #ececec;
+      }
+    }
+
+    .content-text {
+      display: inline-block;
+      width: 400px;
+      height: 500px;
+      padding-left: 30px;
+      vertical-align: top;
+      overflow: auto;
+      border-left: 1px solid #ccc;
+      background-color: #dcd9d9;
+    }
   }
 }
 </style>
 
 <script>
-import api from "../http";
+import api from "../http"
+import marked from 'marked'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
@@ -59,12 +91,14 @@ export default {
         tag: [],  // 文章标签
         content: ''  // 文章内容
       },
+      articleId: '', // 文章Id
       from: 'create',  // 判断是编辑还是创建
       tags: ['node', 'javascript', 'webpack'],  // 标签组
       isDisabled: false  // 是否禁用保存按钮
     }
   },
   computed: {
+    ...mapGetters(['getRenderHtml']),
     rules() {
       return {
         title: [
@@ -74,12 +108,55 @@ export default {
           { type: 'array', required: true, message: '请至少选择一个文章标签', trigger: 'change' }
         ],
         content: [
-          { required: true, message: '请输入内容', trigger: 'blur' }
+          { required: true, message: '请输入内容' }
         ],
       }
     }
   },
+  created() {
+    this.getDefaultData();
+  },
   methods: {
+    // 获取默认数据
+    getDefaultData() {
+      let _this = this,
+        articleId = _this.$route.query.articleId,
+        from = _this.$route.query.from;
+
+
+      _this.from = from;
+      _this.articleId = articleId;
+
+      // 如果不是来自新建就获取文章数据
+      if (from === 'create') {
+
+      } else {
+        let getData = {
+          articleId: articleId
+        }
+        // 获取文章数据
+        api.getArticle(getData).then((res) => {
+          _this.form = {
+            title: res.title,
+            type: res.type,
+            tag: res.tag,
+            content: res.content
+          }
+
+          _this.renderHtml();
+        })
+      }
+    },
+
+    // 渲染markdown
+    renderHtml() {
+      let _this = this,
+        _renderHtml = marked(_this.form.content);
+
+      _this.$store.dispatch('renderMarkdown', _renderHtml);
+    },
+
+    // 保存
     submit(formName) {
       let _this = this;
 
@@ -88,13 +165,27 @@ export default {
       _this.$refs[formName].validate((valid) => {
         if (valid) {
           console.log("校验通过");
-          let formData = JSON.parse(JSON.stringify(_this.form));
-          
-          formData.tag = formData.tag.join(",");
+          let form = JSON.parse(JSON.stringify(_this.form)),
+            postData = {
+              title: form.title,
+              type: form.type,
+              tag: form.tag.join(","),
+              content: form.content
+            };
 
-          if(_this.from === 'create'){
-            api.createArticle(formData).then((res)=>{
-              console.log(res);
+          // 如果来自创建，调用创建接口
+          if (_this.from === 'create') {
+            api.createArticle(postData).then((res) => {
+              _this.$router.push({
+                path: '/'
+              })
+            })
+          } else {
+            postData.articleId = _this.articleId;
+            api.editArticle(postData).then((res) => {
+              _this.$router.push({
+                path: '/'
+              })
             })
           }
         } else {

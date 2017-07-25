@@ -12,7 +12,16 @@
 
 <script>
   export default {
-    name: 'app'
+    name: 'app',
+    watch:{
+      '$route':{
+        handler(){
+          let _this = this;
+
+          _this.$store.dispatch('renderMarkdown', '');
+        }
+      }
+    }
   }
 </script>
 
@@ -27,26 +36,6 @@
   body {
     color: #505050;
     background-color: #EBEDF2;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  ul li {
-    list-style: none;
-  }
-
-  input::-ms-clear {
-    display: none;
-  }
-
-  button {
-    border: none;
-    background: none;
-    color: inherit;
-    outline: none;
-    cursor: pointer;
   }
 
   .clear-float {

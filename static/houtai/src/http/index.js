@@ -4,9 +4,16 @@ import qs from 'qs'
 axios.defaults.baseURL = 'http://localhost:3000';
 
 let ajaxUrl = {
+    // 创建文章
     createArticle: '/houtai/create-article',
+    // 编辑文章
     editArticle: '/houtai/edit-article',
+    // 获取文章列表
     getArticleList: '/houtai/get-article-list',
+    // 获取文章数据
+    getArticle: '/houtai/get-article',
+    // 删除文章数据
+    deleteArticle: '/houtai/delete-article'
 }
 
 axios.defaults.timeout = 10000;
@@ -30,7 +37,16 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   // 正确处理
   res => {
-    return res;
+    let data = res.data,
+        status = data.return_code,
+        msg = data.return_msg;
+
+    if (status === 'SUCCESS') {
+      return msg;
+    } else {
+      console.log(msg);
+      return Promise.reject(msg);
+    }
   },
   // 错误处理
   error => {
@@ -93,5 +109,15 @@ export default {
     // 获取文章列表
     getArticleList(params){
         return fetchGet(ajaxUrl.getArticleList,params);
+    },
+    
+    // 删除文章
+    deleteArticle(params){
+        return fetchGet(ajaxUrl.deleteArticle,params);
+    },
+
+    // 获取单个文章数据
+    getArticle(params){
+        return fetchGet(ajaxUrl.getArticle,params);
     }
 }
