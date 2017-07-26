@@ -7,7 +7,7 @@
   
     <el-form :model="form" label-width="80px" ref="ruleForm" :rules="rules">
       <el-form-item label="标题" prop="title" class="article-title">
-        <el-input v-model="form.title"></el-input>
+        <el-input v-model="form.title" maxlength="20"></el-input>
       </el-form-item>
   
       <el-form-item label="类型">

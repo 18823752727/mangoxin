@@ -1,68 +1,72 @@
 <template>
   <div id="app">
-    <header>
-
-    </header>
-
-    <div class="section">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    watch:{
-      '$route':{
-        handler(){
-          let _this = this;
+import { mapState, mapGetters } from 'vuex'
 
-          _this.$store.dispatch('renderMarkdown', '');
+export default {
+  name: 'app',
+  computed:{
+    ...mapGetters(['isLogin'])
+  },
+  watch: {
+    '$route': {
+      handler() {
+        let _this = this;
+
+        _this.$store.dispatch('renderMarkdown', '');
+      }
+    },
+    'isLogin':{
+      handler(value){
+        if(!value){
+          this.$router.push({
+            path:'/login'
+          })
         }
       }
     }
   }
+}
 </script>
 
 <style lang="less">
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+body {
+  color: #505050;
+  background-color: #EBEDF2;
+}
+
+.clear-float {
+  zoom: 1;
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
   }
+}
 
-  body {
-    color: #505050;
-    background-color: #EBEDF2;
-  }
+header {
+  width: 100%;
+  height: 60px;
+  background-color: black;
+}
 
-  .clear-float {
-    zoom: 1;
-
-    &:after {
-      content: "";
-      display: block;
-      clear: both;
-      visibility: hidden;
-      height: 0;
-    }
-  }
-
-  header {
-    width: 100%;
-    height:60px;
-    background-color: black;
-  }
-
-  .section {
-    max-width: 1000px;
-    min-height: 500px;
-    margin: 60px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-
-  }
+.section {
+  max-width: 1000px;
+  min-height: 500px;
+  margin: 60px auto;
+}
 </style>

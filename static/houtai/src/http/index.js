@@ -1,19 +1,22 @@
 import axios from 'axios'
 import qs from 'qs'
+import store from '../vuex/store'
 
-axios.defaults.baseURL = 'http://localhost:3000';
+// axios.defaults.baseURL = 'http://localhost:3000';
 
 let ajaxUrl = {
-    // 创建文章
-    createArticle: '/houtai/create-article',
-    // 编辑文章
-    editArticle: '/houtai/edit-article',
-    // 获取文章列表
-    getArticleList: '/houtai/get-article-list',
-    // 获取文章数据
-    getArticle: '/houtai/get-article',
-    // 删除文章数据
-    deleteArticle: '/houtai/delete-article'
+  // 创建文章
+  createArticle: '/houtai/create-article',
+  // 编辑文章
+  editArticle: '/houtai/edit-article',
+  // 获取文章列表
+  getArticleList: '/houtai/get-article-list',
+  // 获取文章数据
+  getArticle: '/houtai/get-article',
+  // 删除文章数据
+  deleteArticle: '/houtai/delete-article',
+  // 登录
+  login: '/users/login'
 }
 
 axios.defaults.timeout = 10000;
@@ -38,13 +41,19 @@ axios.interceptors.response.use(
   // 正确处理
   res => {
     let data = res.data,
-        status = data.return_code,
-        msg = data.return_msg;
+      status = data.return_code,
+      msg = data.return_msg;
 
     if (status === 'SUCCESS') {
       return msg;
     } else {
-      console.log(msg);
+      if (msg === 'guest') {
+        store.dispatch('isLogin', false);
+      } else {
+        if (!store.state.isLogin) {
+          store.dispatch('isLogin', true);
+        }
+      }
       return Promise.reject(msg);
     }
   },
@@ -73,8 +82,8 @@ export function fetchGet(url, params) {
       error => {
         reject(error)
       }).catch((error) => {
-        reject(error);
-      })
+      reject(error);
+    })
   })
 }
 
@@ -96,28 +105,33 @@ export function fetchPost(url, params) {
 }
 
 export default {
-    // 创建文章
-    createArticle(params){
-        return fetchPost(ajaxUrl.createArticle,params);
-    },
+  // 创建文章
+  createArticle(params) {
+    return fetchPost(ajaxUrl.createArticle, params);
+  },
 
-    // 编辑文章
-    editArticle(params){
-        return fetchPost(ajaxUrl.editArticle,params);
-    },
-    
-    // 获取文章列表
-    getArticleList(params){
-        return fetchGet(ajaxUrl.getArticleList,params);
-    },
-    
-    // 删除文章
-    deleteArticle(params){
-        return fetchGet(ajaxUrl.deleteArticle,params);
-    },
+  // 编辑文章
+  editArticle(params) {
+    return fetchPost(ajaxUrl.editArticle, params);
+  },
 
-    // 获取单个文章数据
-    getArticle(params){
-        return fetchGet(ajaxUrl.getArticle,params);
-    }
+  // 获取文章列表
+  getArticleList(params) {
+    return fetchGet(ajaxUrl.getArticleList, params);
+  },
+
+  // 删除文章
+  deleteArticle(params) {
+    return fetchGet(ajaxUrl.deleteArticle, params);
+  },
+
+  // 获取单个文章数据
+  getArticle(params) {
+    return fetchGet(ajaxUrl.getArticle, params);
+  },
+
+  // 获取单个文章数据
+  login(params) {
+    return fetchPost(ajaxUrl.login, params);
+  }
 }

@@ -1,55 +1,49 @@
 const express = require('express');
 const router = express.Router();
-const crub = require("../util/crub.js");
+const crub = require('../util/crub.js');
+const Aes = require('../util/crypto');
+const status = require('../util/status');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
+    let key = "6c548741723eb60d16d38cd6215007d5b3a6ef9f",
+        data = "这是个秘钥";
+
+    let encrypt = Aes.aesEncrypt(data, key);
+    let decrypt = Aes.aesDecrypt(encrypt, key);
+
+    console.log(data);
+    console.log("加密" + encrypt);
+    console.log("解密" + decrypt);
+    res.send("dsad");
+
 });
 
-// 写入列表
-router.get('/set-article-list', (req, res) => {
+router.post('/login', function (req, res) {
+    let collection = new crub("user"),
+        body = req.body,
+        postData = {
+            user: body.user,
+            password: body.password
+        };
 
-  let collection = new crub("list");
+    collection.find(postData).then((item) => {
+        if (item.length > 0) {
+            req.session.regenerate((err) => {
+                if (err) {
+                    res.send(status.fail("登陆失败,session保存失败"))
+                }else {
+                    req.session.userStatus = "sss";
+                    res.send(status.success("登录成功"));
+                }
+            })
 
-  collection.create({
-    name: "我是用过借口过来的"
-  }).then((item) => {
-    res.send(item);
-  })
-});
+        } else {
+            res.send(status.fail("登录失败，请重新输入"));
+        }
+    });
 
-// 查找列表
-router.get("/get-article-list", (req, res) => {
-  let collection = new crub("list");
-
-  collection.find().then((item) => {
-    res.send(item);
-  })
-});
-
-// 更新列表
-router.get("/update-article", (req, res) => {
-  let collection = new crub("list");
-
-  collection.update({
-    "name": "hello mongo"
-  }, {
-    "name": "这是更新后的数据"
-  }).then(() => {
-    res.send("更新成功");
-  })
-});
-
-// 删除列表
-router.get("/delete-article", (req, res) => {
-  let collection = new crub("list");
-
-  collection.delete({
-    "name" : "我是用过借口过来的"
-  }).then(() => {
-    res.send("删除成功");
-  })
+    console.log(req.session.userStatus);
 });
 
 module.exports = router;

@@ -21,24 +21,32 @@ Vue.use(Vuex);
 
 const state = {
   content: '',
-  renderHtml: ''
+  renderHtml: '',
+  isLogin: true
 }
 
 const mutations = {
   MARKDOWN_SUCCESS(state, value) {
     state.renderHtml = value;
+  },
+  LOGIN(state,value){
+    state.isLogin = value;
   }
 }
 
 const actions = {
   renderMarkdown({commit}, value) {
     commit('MARKDOWN_SUCCESS', value)
+  },
+  isLogin({commit},value){
+    commit('LOGIN',value);
   }
 }
 
 const getters = {
     getRawHtml: state => state.rawHtml,
-    getRenderHtml: state => state.renderHtml
+    getRenderHtml: state => state.renderHtml,
+    isLogin: state => state.isLogin
 }
 
 export default new Vuex.Store({
