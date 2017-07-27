@@ -13,3 +13,7 @@ exports.aesDecrypt = function (encrypted, key) {
     decrypted += decipher.final('utf8');
     return decrypted;
 };
+
+exports.getHamc = function(key){
+    return crypto.createHmac('sha256', 'secret-key').update(key).digest('hex');
+}

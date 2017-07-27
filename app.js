@@ -28,9 +28,7 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // 使用中间件
-app.use(cors({
-    origin: "http://192.168.0.111:8080"
-}));
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -41,7 +39,7 @@ app.use(session({
     saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
     resave: false,  // 是否每次都重新保存会话，建议false
     cookie: {
-        maxAge: 10 * 1000  // 有效期，单位是毫秒
+        maxAge: 60 * 60 * 1000  // 有效期，单位是毫秒
     }
 }));
 

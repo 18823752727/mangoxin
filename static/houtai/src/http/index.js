@@ -2,21 +2,24 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../vuex/store'
 
-// axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = '/houtai';
+// axios.defaults.withCredentials = true;
 
 let ajaxUrl = {
   // 创建文章
-  createArticle: '/houtai/create-article',
+  createArticle: '/create-article',
   // 编辑文章
-  editArticle: '/houtai/edit-article',
+  editArticle: '/edit-article',
   // 获取文章列表
-  getArticleList: '/houtai/get-article-list',
+  getArticleList: '/get-article-list',
   // 获取文章数据
-  getArticle: '/houtai/get-article',
+  getArticle: '/get-article',
   // 删除文章数据
-  deleteArticle: '/houtai/delete-article',
+  deleteArticle: '/delete-article',
   // 登录
-  login: '/users/login'
+  login: '/login',
+  // 退出登录
+  layout:'/layout'
 }
 
 axios.defaults.timeout = 10000;
@@ -130,8 +133,13 @@ export default {
     return fetchGet(ajaxUrl.getArticle, params);
   },
 
-  // 获取单个文章数据
+  // 登录
   login(params) {
     return fetchPost(ajaxUrl.login, params);
+  },
+
+  // 退出登录
+  layout(params){
+    return fetchGet(ajaxUrl.layout,params);
   }
 }

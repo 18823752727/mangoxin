@@ -19,31 +19,4 @@ router.get('/', function (req, res, next) {
 
 });
 
-router.post('/login', function (req, res) {
-    let collection = new crub("user"),
-        body = req.body,
-        postData = {
-            user: body.user,
-            password: body.password
-        };
-
-    collection.find(postData).then((item) => {
-        if (item.length > 0) {
-            req.session.regenerate((err) => {
-                if (err) {
-                    res.send(status.fail("登陆失败,session保存失败"))
-                }else {
-                    req.session.userStatus = "sss";
-                    res.send(status.success("登录成功"));
-                }
-            })
-
-        } else {
-            res.send(status.fail("登录失败，请重新输入"));
-        }
-    });
-
-    console.log(req.session.userStatus);
-});
-
 module.exports = router;
