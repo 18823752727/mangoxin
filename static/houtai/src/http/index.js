@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../vuex/store'
 
-axios.defaults.baseURL = '/houtai';
+axios.defaults.baseURL = 'http://127.0.0.1:3000/houtai';
 // axios.defaults.withCredentials = true;
 
 let ajaxUrl = {

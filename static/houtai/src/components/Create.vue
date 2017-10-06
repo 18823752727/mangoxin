@@ -4,12 +4,12 @@
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>新建文章</el-breadcrumb-item>
     </el-breadcrumb>
-  
+
     <el-form :model="form" label-width="80px" ref="ruleForm" :rules="rules">
       <el-form-item label="标题" prop="title" class="article-title">
         <el-input v-model="form.title"></el-input>
       </el-form-item>
-  
+
       <el-form-item label="类型">
         <el-radio-group v-model="form.type">
           <el-radio label="文章">文章</el-radio>
@@ -17,20 +17,20 @@
           <el-radio label="随笔">随笔</el-radio>
         </el-radio-group>
       </el-form-item>
-  
+
       <el-form-item label="分类" prop="tag">
         <el-checkbox-group v-model="form.tag">
           <el-checkbox v-for="tag in tags" :label="tag" :key="tag">{{tag}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-  
+
       <el-form-item label="内容" prop="content" class="article-content">
         <el-input type="textarea" v-model="form.content" @input="renderHtml"></el-input>
         <!--
           -->
         <div class="content-text" v-html="getRenderHtml"></div>
       </el-form-item>
-  
+
       <el-form-item label-width="80px">
         <el-button type="primary" @click="submit('ruleForm')" :disabled="isDisabled">立即创建</el-button>
         <el-button>取消</el-button>
@@ -41,6 +41,9 @@
 
 <style lang="less">
 .form {
+  background-color: #fff;
+  padding: 20px;
+
   .el-breadcrumb {
     margin-bottom: 30px;
   }

@@ -7,13 +7,13 @@ const status = require('../util/status');
 const moment = require('moment');
 
 // 请求拦截，如果当前的user为空，直接返回失败
-router.get('*', (req, res, next) => {
-    if (!req.session.token) {
-        res.send(status.fail("guest"));
-    } else {
-        next();
-    }
-});
+// router.get('*', (req, res, next) => {
+//     if (!req.session.token) {
+//         res.send(status.fail("guest"));
+//     } else {
+//         next();
+//     }
+// });
 
 // 登录
 router.post('/login', function (req, res) {
