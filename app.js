@@ -29,36 +29,22 @@ app.set('view engine', 'jade');
 
 // 使用中间件
 app.use(cors());
-// let allowCrossDomain = function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type');
-//     res.header('Access-Control-Allow-Credentials','true');
-//     next();
-// };
-//
-// app.use(allowCrossDomain());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser('chengyi'));
-app.use(session({
-    name: 'identityKey',
-    secret: 'chengyi',  // 用来对session id相关的cookie进行签名
-    saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
-    resave: false,  // 是否每次都重新保存会话，建议false
-    cookie: {
-        maxAge: 60 * 60 * 1000  // 有效期，单位是毫秒
-    }
-}));
+// app.use(session({
+//     name: 'identityKey',
+//     secret: 'chengyi',  // 用来对session id相关的cookie进行签名
+//     saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
+//     resave: false,  // 是否每次都重新保存会话，建议false
+//     cookie: {
+//         maxAge: 60 * 60 * 1000  // 有效期，单位是毫秒
+//     }
+// }));
 
 // 设置静态文件路径
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.all("*",(req,res,next)=>{
-    console.log(req.session.userStatus+ "all");
-    next();
-});
 
 // 使用路由
 app.use('/', index);

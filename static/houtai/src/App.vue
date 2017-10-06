@@ -1,16 +1,22 @@
 <template>
   <div id="app">
+    <!--左边侧边栏导航-->
+    <aside></aside>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex';
+import Aside from './components/aside.vue';
 
 export default {
   name: 'app',
   computed:{
     ...mapGetters(['isLogin'])
+  },
+  components: {
+    Aside,
   },
   watch: {
     '$route': {

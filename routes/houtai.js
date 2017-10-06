@@ -5,7 +5,8 @@ const crub = require("../util/crub.js");
 const getCrypto = require('../util/crypto');
 const status = require('../util/status');
 const moment = require('moment');
-
+const loginController = require('../controller/houtai/login');
+// import {loginController} from '../controller/houtai/login';
 // 请求拦截，如果当前的user为空，直接返回失败
 // router.get('*', (req, res, next) => {
 //     if (!req.session.token) {
@@ -31,27 +32,32 @@ router.post('/login', function (req, res) {
     } else if (!password) {
         res.send(status.fail("请输入密码"));
     } else {
-        collection.find(postData).then((item) => {
-            if (item.length > 0) {
-                req.session.regenerate((err) => {
-                    if (err) {
-                        res.send(status.fail("登陆失败,session保存失败"))
-                    } else {
-                        let userName = item[0].user,
-                            token = getCrypto.getHamc(userName);
+        // new login(req,res,data);
+        // console.log(loginController);
+        let controller = new loginController(req,res,postData);
 
-                        req.session.token = token;
-
-                        res.send(status.success({
-                            token: token
-                        }));
-                    }
-                })
-
-            } else {
-                res.send(status.fail("登录失败，请重新输入"));
-            }
-        });
+        controller.login();
+        // collection.find(postData).then((item) => {
+        //     if (item.length > 0) {
+        //         req.session.regenerate((err) => {
+        //             if (err) {
+        //                 res.send(status.fail("登陆失败,session保存失败"))
+        //             } else {
+        //                 let userName = item[0].user,
+        //                     token = getCrypto.getHamc(userName);
+        //
+        //                 req.session.token = token;
+        //
+        //                 res.send(status.success({
+        //                     token: token
+        //                 }));
+        //             }
+        //         })
+        //
+        //     } else {
+        //         res.send(status.fail("登录失败，请重新输入"));
+        //     }
+        // });
     }
 });
 
