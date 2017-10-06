@@ -1,12 +1,10 @@
 /**
  * 后台登陆控制器
  */
-const ObjectId = require('mongodb').ObjectId;
 const crub = require("../../util/crub");
-const getCrypto = require('../../util/crypto');
+const crypto = require('crypto');
 const status = require('../../util/status');
-const moment = require('moment');
-
+const config = require('../../config/index.json');
 
 class loginController {
     /**
@@ -23,33 +21,83 @@ class loginController {
         _this.data = data;
     }
 
-    // 设置登录token
-    setToken(callback) {
+    // 校验登录token
+    // settingToken(data) {
+    //     let _this = this;
+    //
+    //     return new Promise((resolve, reject) => {
+    //         // 如果token不存在或者token过期，就重新获取
+    //         if (!data.token || Date.now() > data.endDate) {
+    //             // 设置token
+    //             _this.setToken().then((token) => {
+    //                 resolve({
+    //                     token
+    //                 });
+    //             }).catch((error) => {
+    //                 console.log(error);
+    //             });
+    //         } else {
+    //             resolve({
+    //                 token: data.token
+    //             });
+    //         }
+    //     })
+    //
+    // }
+
+    // 设置token
+    setToken() {
         let _this = this,
-            token = new crub("login_token");
+            collection = new crub("user"),
+            token = crypto.createHmac('sha256', 'key')
+                .update(config.key)
+                .digest('hex'),
+            updateData = {
+                token,
+                endDate: Date.now() + 30 * 60 * 1000
+            };
 
-        token.find(_this.data.user).then((item)=>{
-            if(item.length) {
+        return new Promise((resolve, reject) => {
+            collection.update(_this.data, updateData).then((item) => {
+                resolve({
+                    token
+                });
+            }, (error) => {
+                reject(error + '设置token');
+            }).catch((error) => {
+                reject(error + '设置token');
+            });
+        });
 
-            }
-        })
-
-        if((typeof callback).toLocaleLowerCase() === 'function') {
-            callback();
-        }
     }
 
     // 登录操作
     login() {
         let _this = this,
-            collection = new crub("user");
+            res = _this.res, // 返回
+            collection = new crub("user"); // 用户数据表
 
-        _this.setToken(()=>{
-
-        })
-
+        // 查询用户信息
         collection.find(_this.data).then((item) => {
-            console.log(item);
+            let userInfo = item[0];
+
+            if (!item.length) {
+                res.send(status.fail('登录失败，请输入正确的用户名或密码'));
+            } else {
+                // 设置token
+                _this.setToken().then((result) => {
+                    res.send(status.success({
+                        token: result.token,
+                        userId: userInfo._id
+                    }));
+                },(error)=>{
+                    res.send(status.fail('设置token失败，请稍后重试'));
+                }).catch((error)=>{
+                    res.send(status.fail('设置token失败，请稍后重试'));
+                });
+            }
+        }).catch((error) => {
+            console.log(error);
         });
     }
 }

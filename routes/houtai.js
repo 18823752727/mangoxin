@@ -18,8 +18,7 @@ const loginController = require('../controller/houtai/login');
 
 // 登录
 router.post('/login', function (req, res) {
-    let collection = new crub("user"),
-        body = req.body,
+    let body = req.body,
         user = body.user,
         password = body.password,
         postData = {
@@ -32,32 +31,9 @@ router.post('/login', function (req, res) {
     } else if (!password) {
         res.send(status.fail("请输入密码"));
     } else {
-        // new login(req,res,data);
-        // console.log(loginController);
         let controller = new loginController(req,res,postData);
 
         controller.login();
-        // collection.find(postData).then((item) => {
-        //     if (item.length > 0) {
-        //         req.session.regenerate((err) => {
-        //             if (err) {
-        //                 res.send(status.fail("登陆失败,session保存失败"))
-        //             } else {
-        //                 let userName = item[0].user,
-        //                     token = getCrypto.getHamc(userName);
-        //
-        //                 req.session.token = token;
-        //
-        //                 res.send(status.success({
-        //                     token: token
-        //                 }));
-        //             }
-        //         })
-        //
-        //     } else {
-        //         res.send(status.fail("登录失败，请重新输入"));
-        //     }
-        // });
     }
 });
 
