@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import marked from 'marked'
 
+// modules
+import user from './modules/user';
+
 //marked配置文件
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -53,5 +56,8 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
-  getters
+  getters,
+  modules: {
+    user
+  }
 })

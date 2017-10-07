@@ -88,7 +88,8 @@ class loginController {
                 _this.setToken().then((result) => {
                     res.send(status.success({
                         token: result.token,
-                        userId: userInfo._id
+                        userId: userInfo._id,
+                        userName: userInfo.user
                     }));
                 },(error)=>{
                     res.send(status.fail('设置token失败，请稍后重试'));

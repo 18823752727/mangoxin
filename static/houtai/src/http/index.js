@@ -30,6 +30,9 @@ axios.interceptors.request.use(
     if (config.method === 'post') {
       config.data = qs.stringify(config.data);
     }
+
+
+
     return config;
   },
 

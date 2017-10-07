@@ -31,16 +31,14 @@ router.post('/login', function (req, res) {
     } else if (!password) {
         res.send(status.fail("请输入密码"));
     } else {
-        let controller = new loginController(req,res,postData);
-
-        controller.login();
+        // 调用登录方法
+        new loginController(req, res, postData).login();
     }
 });
 
 // 退出登录
 router.get('/layout', (req, res) => {
-    req.session.user = null;
-    res.send(req.fail("退出成功"));
+    
 })
 
 // 创建文章
