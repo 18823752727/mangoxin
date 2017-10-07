@@ -1,69 +1,80 @@
 <template>
-    <div>
-        <header>
-            <div class="user-info">
-                <span class="user-name">
-                    dada
-                </span>
-                <span class="layout" @click="layout">
-                    退出
-                </span>
-            </div>
-        </header>
-    
-        <div class="section">
-            <router-view></router-view>
-        </div>
+  <div>
+    <header>
+      <div class="user-info">
+        <span class="user-name">
+          {{userName}}
+        </span>
+        <span class="layout" @click="layout">
+          退出
+        </span>
+      </div>
+    </header>
+
+    <div class="section">
+      <router-view></router-view>
     </div>
+  </div>
 </template>
 
 <script>
-import api from "../http"
+  import api from "../http";
+  import {mapGetters,mapActions} from 'vuex';
 
-export default {
+  export default {
     name: 'index',
     data() {
-        return {
-            
-        }
+      return {}
+    },
+    computed: {
+      ...mapGetters(['userName'])
     },
     methods: {
-        layout(){
-            api.layout().then(()=>{
-                this.$router.push({
-                    path:'/login'
-                })
-            })
-        }
+      ...mapActions(['clearUserInfo']),
+      layout() {
+        let _this = this;
+
+        api.layout().then(() => {
+          // 清除用户信息
+          _this.clearUserInfo();
+
+          // 跳转到登录界面
+          _this.$router.push({
+            path: '/login'
+          });
+
+
+        })
+      }
     }
-}
+  }
 </script>
 
 
-<style lang = "less">
-header {
+<style lang="less">
+  header {
     width: 100%;
     height: 60px;
     padding: 0 30px;
     background-color: black;
 
     .user-info {
-        float : right;
-        height: 60px;
-        line-height: 60px;
-        color: #fff;
+      float: right;
+      height: 60px;
+      line-height: 60px;
+      color: #fff;
 
-        .layout {
-            margin-left: 20px;
-            cursor: pointer;
-        }
+      .layout {
+        margin-left: 20px;
+        cursor: pointer;
+      }
     }
-}
+  }
 
-.section {
+  .section {
     max-width: 1000px;
     min-height: 500px;
     margin: 60px auto;
-}
+  }
 </style>
 

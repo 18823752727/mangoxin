@@ -45,7 +45,9 @@ const actions = {
     commit(types.SET_USER_TOKEN, res.token);
     commit(types.SET_USER_NAME, res.userName);
     commit(types.SET_USER_ID, res.userId);
-    commit(types.SET_LOGIN_STATUS, true);
+    commit(types.SET_LOGIN_STATUS, {
+      status: true
+    });
   },
 
   // 清除用户信息
@@ -57,7 +59,9 @@ const actions = {
     commit(types.SET_USER_TOKEN, '');
     commit(types.SET_USER_NAME, '');
     commit(types.SET_USER_ID, '');
-    commit(types.SET_LOGIN_STATUS, false);
+    commit(types.SET_LOGIN_STATUS, {
+      status: false
+    });
   }
 }
 

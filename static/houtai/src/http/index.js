@@ -27,11 +27,20 @@ axios.defaults.timeout = 10000;
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
+    let params = config.params || {};
+    // 请求添加用户登录信息
+    // params.userId = localStorage.getItem('userId');
+    // params.token = localStorage.getItem('token');
+    params.token = store.state.user.token;
+    params.userId = store.state.user.userId;
+
+    // 如果是post请求，就将请求参数格式化
     if (config.method === 'post') {
       config.data = qs.stringify(config.data);
     }
 
-
+    // 将校验用户信息参数放到get请求参数上
+    config.params = params;
 
     return config;
   },
@@ -52,14 +61,11 @@ axios.interceptors.response.use(
 
     if (status === 'SUCCESS') {
       return msg;
+    }else if(status === 'GUEST') {
+      // 清除用户信息
+      store.dispatch('clearUserInfo');
+      return Promise.reject(msg);
     } else {
-      if (msg === 'guest') {
-        store.dispatch('isLogin', false);
-      } else {
-        if (!store.state.isLogin) {
-          store.dispatch('isLogin', true);
-        }
-      }
       return Promise.reject(msg);
     }
   },

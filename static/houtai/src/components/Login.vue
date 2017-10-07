@@ -4,10 +4,15 @@
       <div class="title">系统登录</div>
       <el-form class="login-form" :model="form" :rules="rules" ref="form" label-width="0">
         <el-form-item prop="user">
-          <el-input placeholder="请输入用户名" v-model="form.user"></el-input>
+          <el-input placeholder="请输入用户名"
+                    v-model="form.user"
+                    @keyup.enter="submitForm('form')"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" placeholder="请输入密码" v-model="form.password"></el-input>
+          <el-input type="password"
+                    placeholder="请输入密码"
+                    v-model="form.password"
+                    @keyup.enter="submitForm('form')"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button class="login-btn" type="primary" @click="submitForm('form')">提交</el-button>
@@ -19,7 +24,7 @@
 
 <script>
   import api from '../http';
-  import {mapState, mapActions} from 'vuex';
+  import {mapActions} from 'vuex';
 
 
   export default {

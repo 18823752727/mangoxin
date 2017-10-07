@@ -2,19 +2,13 @@ const express = require('express');
 const router = express.Router();
 const ObjectId = require('mongodb').ObjectId;
 const crub = require("../util/crub.js");
-const getCrypto = require('../util/crypto');
 const status = require('../util/status');
 const moment = require('moment');
-const loginController = require('../controller/houtai/login');
-// import {loginController} from '../controller/houtai/login';
-// 请求拦截，如果当前的user为空，直接返回失败
-// router.get('*', (req, res, next) => {
-//     if (!req.session.token) {
-//         res.send(status.fail("guest"));
-//     } else {
-//         next();
-//     }
-// });
+const checkLogin = require('../controller/houtai/checkLogin');
+const loginController = require('../controller/houtai/login'); // 登录
+
+// 使用登录校验
+router.use(checkLogin);
 
 // 登录
 router.post('/login', function (req, res) {
@@ -38,8 +32,8 @@ router.post('/login', function (req, res) {
 
 // 退出登录
 router.get('/layout', (req, res) => {
-    
-})
+    new loginController(req, res).layout(req.query.userId);
+});
 
 // 创建文章
 router.post('/create-article', (req, res) => {

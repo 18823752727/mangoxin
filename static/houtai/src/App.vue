@@ -13,12 +13,13 @@ import Aside from './components/aside.vue';
 export default {
   name: 'app',
   computed:{
-    ...mapGetters(['isLogin'])
+    ...mapGetters(['isLogin','loginStatus'])
   },
   components: {
     Aside,
   },
   watch: {
+    // 监听路由变化
     '$route': {
       handler() {
         let _this = this;
@@ -26,9 +27,11 @@ export default {
         _this.$store.dispatch('renderMarkdown', '');
       }
     },
-    'isLogin':{
+
+    // 监听登录状态
+    'loginStatus':{
       handler(value){
-        if(!value){
+        if(!value.status){
           this.$router.push({
             path:'/login'
           })

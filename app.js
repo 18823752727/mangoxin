@@ -17,7 +17,6 @@ const config = require('./config');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const houtai = require('./routes/houtai');
-
 const app = express();
 
 // 安装视图引擎
@@ -32,7 +31,7 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser('chengyi'));
+// app.use(cookieParser('chengyi'));
 // app.use(session({
 //     name: 'identityKey',
 //     secret: 'chengyi',  // 用来对session id相关的cookie进行签名
