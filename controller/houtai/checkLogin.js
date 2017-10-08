@@ -7,9 +7,9 @@ module.exports = function (req, res, next) {
         collection = new crub("user"), // 用户数据表
         token = query.token, // 用户token
         userId = query.userId;  // 用户ID
-
+    
     // 如果是登录操作，直接next
-    if(req.url === '/login') {
+    if(req.url.indexOf('/login') !== -1) {
         next();
         return ;
     }
@@ -17,6 +17,7 @@ module.exports = function (req, res, next) {
     // 如果用户的ID或者token不存在，就直接返回guest
     if(!token || !userId) {
         res.send(status.guest());
+        return ;
     }
 
     // 查询用户信息，看token是否正确
@@ -31,7 +32,7 @@ module.exports = function (req, res, next) {
                 collection.update({
                     "_id": ObjectId(userId)
                 },{
-                    'endDate': 30 * 60 * 1000
+                    'endDate': Date.now() + 30 * 60 * 1000
                 }).then(()=>{
                     next();
                 });

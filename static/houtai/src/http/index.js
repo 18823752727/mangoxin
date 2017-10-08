@@ -39,8 +39,10 @@ axios.interceptors.request.use(
       config.data = qs.stringify(config.data);
     }
 
-    // 将校验用户信息参数放到get请求参数上
-    config.params = params;
+    // 将校验用户信息参数放到get请求参数上(排除登录)
+    if(config.url.indexOf(ajaxUrl.login) === -1) {
+      config.params = params;
+    }
 
     return config;
   },
