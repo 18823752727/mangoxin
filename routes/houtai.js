@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const ObjectId = require('mongodb').ObjectId;
 const crub = require("../util/crub.js");
 const status = require('../util/status');
 const moment = require('moment');
-const checkLogin = require('../controller/houtai/checkLogin');
+const checkLogin = require('../controller/houtai/checkLogin'); // 登录校验中间件
 const loginController = require('../controller/houtai/login'); // 登录
 const articleController = require('../controller/houtai/article'); // 文章操作
 // 使用登录校验
