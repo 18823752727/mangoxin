@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 // 跨域中间件
 const cors = require('cors');
+// 跨域配置
+const corsConfig = require('./config/cors');
 // session
 const session = require('express-session');
 // 配置文件
@@ -27,7 +29,7 @@ app.set('view engine', 'jade');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // 使用中间件
-app.use(cors());
+app.use(cors(corsConfig));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
